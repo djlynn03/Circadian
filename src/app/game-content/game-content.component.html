@@ -1,0 +1,82 @@
+<div id="game-container">
+  <svg id="game-main" width="900px" height="800px">
+    <g *ngFor="let circle of getEmptyCircles()">
+      <circle
+        class="empty-circle"
+        [attr.cx]="getCircleX(circle)"
+        [attr.cy]="getCircleY(circle)"
+        [attr.r]="100"
+        fill="transparent"
+        stroke="black"
+        stroke-width="1"
+      />
+    </g>
+    <g *ngFor="let circle of circleData">
+      <circle
+        [attr.cx]="getCircleX(circle)"
+        [attr.cy]="getCircleY(circle)"
+        [attr.r]="100"
+        fill="#b3b3b3"
+        (click)="moveCircle(circle, $event)"
+        class="main-circle"
+      ></circle>
+      <circle
+        [attr.cx]="getCircleX(circle)"
+        [attr.cy]="getCircleY(circle)"
+        [attr.r]="100 * 0.75"
+        stroke="#000000"
+        fill="transparent"
+        stroke-width=".5"
+      ></circle>
+      <circle
+        [attr.cx]="getCircleX(circle)"
+        [attr.cy]="getCircleY(circle)"
+        [attr.r]="100 * 0.5"
+        stroke="#000000"
+        fill="transparent"
+        stroke-width=".5"
+      ></circle>
+      <circle
+        [attr.cx]="getCircleX(circle)"
+        [attr.cy]="getCircleY(circle)"
+        [attr.r]="100 * 0.25"
+        stroke="#000000"
+        fill="transparent"
+        stroke-width=".5"
+      ></circle>
+      <line
+        *ngFor="let line of circle.lines"
+        [attr.x1]="getCircleX(circle)"
+        [attr.y1]="getCircleY(circle)"
+        [attr.x2]="getCircleX(circle) + getLineX(line) * 100"
+        [attr.y2]="getCircleY(circle) + getLineY(line) * 100"
+        stroke="#000000"
+        stroke-width="3"
+        stroke-linecap="round"
+        [class.line-correct]="line.correct"
+      ></line>
+    </g>
+  </svg>
+</div>
+
+<div
+  class="modal modal-container"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">You Win!</h4>
+        <button (click)="closeModal()" class="btn btn-secondary icon-btn"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>Check back tomorrow for a new puzzle</p>
+        <div echarts [options]="options" class="demo-chart"
+        >
+        </div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>

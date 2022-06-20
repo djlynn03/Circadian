@@ -1,0 +1,28 @@
+#header-container{
+  background-color: #181818;
+  font-size: 40px;
+  text-align: center;
+  line-height: 80px;
+  border-bottom: 1px solid #ffffff50;
+  margin: 0;
+}
+.bi:hover{
+  cursor: pointer;
+  color: #e0e0e0;
+}
+.bi-gear{
+  height: 25px;
+  width: 25px;
+}
+.bi-gear:hover{
+  transform: rotate(360deg);
+  transition: all 0.2s linear;
+}
+.control-container{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}

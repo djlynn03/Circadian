@@ -1,1 +1,41 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+:root {
+  --bs-body-bg: green;
+}
+
+body{
+  background-color: #282828;
+  color: white;
+  padding: 0;
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+}
+.modal .modal-dialog .modal-content{
+  background-color: #282828;
+  color: white;
+}
+.modal .modal-dialog{
+  margin-top: 10rem;
+  animation: .25s fadeDown ease-in-out;
+  filter: drop-shadow(0px 0px 5px black);
+}
+.modal-backdrop{
+  background-color: #282828;
+}
+div.modal-container{
+  background-color: rgba(0,0,0,0.25);
+}
+.icon-btn{
+  line-height: 0;
+}
+@keyframes fadeDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
