@@ -17,12 +17,12 @@ export class GameContentComponent implements OnInit {
   public userStats: string | undefined = getCookie('userStats');
 
 
-  public timeStarted: boolean = false;
-  public startTime: number = 0;
+  public timeStarted = false;
+  public startTime = 0;
 
   public dailyCompleted: boolean = getCookie('dailyCompleted') == 'true';
 
-  public displayStyle: string = "none";
+  public displayStyle = "none";
 
   public circleData = [
     {
