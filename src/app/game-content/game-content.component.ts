@@ -22,9 +22,9 @@ export class GameContentComponent implements OnInit {
 
   public currentBest: number = 0;
 
-  public timeStarted: boolean = false;
-  public startTime: number = 0;
-  public timeElapsed: number = 0;
+  public timeStarted = false;
+  public startTime = 0;
+  public timeElapsed = 0;
 
   public dailyCompletedTime: Date = new Date(Number(localStorage.getItem('dailyCompletedTime')));
   public dailyCompleted: boolean = this.getDailyCompleted();
@@ -40,7 +40,7 @@ export class GameContentComponent implements OnInit {
     }
   }
 
-  public displayStyle: string = "none";
+  public displayStyle = "none";
 
   // pick random message on win
   public winChoices = ["Well done!", "You win!"]
