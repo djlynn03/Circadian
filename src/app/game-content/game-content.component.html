@@ -1,5 +1,5 @@
 <div id="game-container">
-  <svg id="game-main" width="900px" height="800px">
+  <svg id="game-main" width="900px" height="775px">
     <g *ngFor="let circle of getEmptyCircles()">
       <circle
         class="empty-circle"
@@ -63,20 +63,33 @@
   class="modal modal-container"
   tabindex="-1"
   role="dialog"
-  [ngStyle]="{'display':displayStyle}">
+  [ngStyle]="{ display: displayStyle }"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">You Win!</h4>
-        <button (click)="closeModal()" class="btn btn-secondary icon-btn"><i class="bi bi-x-lg"></i></button>
+        <h4 class="modal-title" *ngIf="dailyCompleted">{{ winMsg }}</h4>
+        <h4 class="modal-title" *ngIf="!dailyCompleted">Statistics</h4>
+        <button (click)="closeModal()" class="btn btn-secondary icon-btn">
+          <i class="bi bi-x-lg"></i>
+        </button>
       </div>
       <div class="modal-body">
-        <p>Check back tomorrow for a new puzzle</p>
-        <div echarts [options]="options" class="demo-chart"
-        >
+        <p *ngIf="dailyCompleted">Check back tomorrow for a new puzzle</p>
+        <p *ngIf="!dailyCompleted">Complete today's puzzle for more statistics</p>
+        <div class="stats-main">
+          <div class="stats-container" *ngIf="dailyCompleted">
+            <span class="stats-time">{{ timeElapsed / 1000 }}s</span>
+            <span>Today's time</span>
+          </div>
+          <div class="stats-container">
+            <span class="stats-time">{{ currentBest / 1000 }}s</span>
+            <span>Personal best</span>
+          </div>
         </div>
+        <div echarts [options]="options" class="demo-chart"></div>
       </div>
-      <div class="modal-footer">
-      </div>
+      <div class="modal-footer"></div>
     </div>
   </div>
+</div>

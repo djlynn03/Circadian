@@ -29,6 +29,12 @@ div.modal-container{
 .icon-btn{
   line-height: 0;
 }
+.shown{
+  display: block !important;
+}
+.hidden{
+  display: none !important;
+}
 @keyframes fadeDown {
   0% {
     opacity: 0;

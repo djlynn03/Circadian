@@ -33,6 +33,24 @@ svg#game-main{
   border-radius: 25px;
   box-shadow: 0 0 1px 2px rgb(0 0 0 / 50%);
 }
+
+.stats-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #404040;
+  padding: 10px;
+  border-radius: 15px;
+}
+.stats-main{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.stats-time{
+  font-size: 25px;
+  font-weight: 600;
+}
 @keyframes connected {
   to {
     stroke-dashoffset: 1000;
