@@ -62,7 +62,7 @@ export class GameContentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(JSON.parse(this.userStats!));
+    
     if (this.dailyCompleted) {
       this.gameWin();
     }
@@ -174,14 +174,14 @@ export class GameContentComponent implements OnInit {
 
     // let midnight = new Date(new Date().getTime() + 15 * 60 * 1000)
     let untilMidnight = new Date().setHours(24, 0, 0, 0).valueOf() - new Date().valueOf();
-    console.log(untilMidnight / 1000 / 60 / 60 / 24)
+    
     if (getCookie("dailyCompleted") == "false" || getCookie("dailyCompleted") == undefined) {
       setCookie("dailyCompleted", "true", { expires: untilMidnight / 1000 / 60 / 60 / 24 });
       let timeElapsed = new Date().getTime() - this.startTime;
       let previousTimes = []
       if (getCookie('userStats') != undefined) {
         previousTimes = JSON.parse(getCookie('userStats')!).timeElapsed;
-        console.log(previousTimes)
+        
         setCookie('userStats', JSON.stringify({
           'timeElapsed': timeElapsed + "," + previousTimes,
           }), {expires: 999999});
@@ -203,7 +203,7 @@ export class GameContentComponent implements OnInit {
     const timeData: number[] = JSON.parse(getCookie('userStats')!).timeElapsed.split(',').map((time: string) => { return Math.round(Number(time) / 1000) }).sort((a: number, b: number) => { return a - b });
     const dataAxis = [...(new Set(timeData))];
     const data = dataAxis.map((time: number) => { return (timeData.filter((time2: number) => { return time2 == time }).length / timeData.length) * 100});
-    console.log(dataAxis, data)
+    
 
     this.options = {
       // title: {
