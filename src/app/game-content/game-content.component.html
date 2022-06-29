@@ -1,4 +1,7 @@
 <div id="game-container">
+
+  <div style="position: relative;">
+    <div *ngIf="!dailyCompleted" class="game-timer">{{ timer }}s</div>
   <svg id="game-main" width="900px" height="775px">
     <g *ngFor="let circle of getEmptyCircles()">
       <circle
@@ -17,7 +20,7 @@
         [attr.cy]="getCircleY(circle)"
         [attr.r]="100"
         fill="#b3b3b3"
-        (click)="moveCircle(circle, $event)"
+        (click)="moveCircle(circle)"
         class="main-circle"
       ></circle>
       <circle
@@ -57,6 +60,7 @@
       ></line>
     </g>
   </svg>
+</div>
 </div>
 
 <div

@@ -1,14 +1,14 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import LinearGradient from 'zrender/lib/graphic/LinearGradient';
-import { getGame } from './gamesets';
-import { circlesTouching, linesTouching, getCircleX, getCircleY, getLineX, getLineY} from './helpers';
+import { generatev2 } from './game-gen';
+import { gameDecode } from './gamesets';
+import { circlesTouching, linesTouching, getCircleX, getCircleY, getLineX, getLineY, circle, line } from './helpers';
 
 @Component({
   selector: 'app-game-content',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './game-content.component.html',
   styleUrls: ['./game-content.component.scss'],
-
 })
 export class GameContentComponent implements OnInit {
   public getCircleX = getCircleX;
@@ -25,6 +25,8 @@ export class GameContentComponent implements OnInit {
   public timeStarted = false;
   public startTime = 0;
   public timeElapsed = 0;
+  public timer = "0.0"
+  public timeInterval: NodeJS.Timer | undefined;
 
   public dailyCompletedTime: Date = new Date(Number(localStorage.getItem('dailyCompletedTime')));
   public dailyCompleted: boolean = this.getDailyCompleted();
@@ -32,7 +34,8 @@ export class GameContentComponent implements OnInit {
   public timeSeed = new Date().setHours(0, 0, 0, 0).valueOf();
 
   public getDailyCompleted(): boolean {
-    if (localStorage.getItem('dailyCompleted') == 'true' && this.dailyCompletedTime.getTime() > new Date(Number(localStorage.getItem('resetTime'))).getTime()) {
+    // if (localStorage.getItem('dailyCompleted') == 'true' && this.dailyCompletedTime.getTime() > new Date(Number(localStorage.getItem('resetTime'))).getTime()) {
+    if (localStorage.getItem('dailyCompleted') == 'true' && Date.now() > new Date(Number(localStorage.getItem('resetTime'))).getTime()) {
       localStorage.setItem('dailyCompleted', 'false');
       return false;
     } else {
@@ -52,27 +55,16 @@ export class GameContentComponent implements OnInit {
 
   public circleData = this.initCircleData();
 
-  public initCircleData(): Array<any> {
+  public initCircleData(): Array<circle> {
     if (this.dailyCompleted){
       return JSON.parse(localStorage.getItem('gameState')!);
     }
-    return getGame(this.timeSeed);
-    // [
-    //   {
-    //     xPos: 1, yPos: 1, lines: [{ angle: Math.PI * (5 / 3), correct: false }],
-    //   },
-    //   {
-    //     xPos: 2, yPos: 1, lines: [{ angle: Math.PI * (4 / 3), correct: false }, { angle: Math.PI * (5 / 3), correct: false }],
-    //   },
-    //   {
-    //     xPos: 2, yPos: 2, lines: [{ angle: Math.PI * (4 / 3), correct: false }, { angle: Math.PI * (5 / 3), correct: false }],
-    //   },
-    //   {
-    //     xPos: 3, yPos: 2, lines: [{ angle: Math.PI * (4 / 3), correct: false }],
-    //   },
-    // ]
+    // return getGame(this.timeSeed);
+    // return gameDecode("1,01;2,25;3,4;5,3");
+    // return gameDecode(generatev2());
+    return [{'xPos': 1, 'yPos': 1, 'lines': [{'angle': 2.0943951023931953, 'correct': false}, {'angle': 0, 'correct': false}, {'angle': 1.0471975511965976, 'correct': false}]}, {'xPos': 2, 'yPos': 1, 'lines': [{'angle': 2.0943951023931953, 'correct': false}, {'angle': 3.141592653589793, 'correct': false}, {'angle': 0, 'correct': false}, {'angle': 1.0471975511965976, 'correct': false}]}, {'xPos': 3, 'yPos': 1, 'lines': [{'angle': 2.0943951023931953, 'correct': false}, {'angle': 3.141592653589793, 'correct': false}, {'angle': 1.0471975511965976, 'correct': false}]}, {'xPos': 3, 'yPos': 2, 'lines': [{'angle': 5.235987755982989, 'correct': false}, {'angle': 1.0471975511965976, 'correct': false}, {'angle': 3.141592653589793, 'correct': false}, {'angle': 0, 'correct': false}, {'angle': 4.1887902047863905, 'correct': false}, {'angle': 2.0943951023931953, 'correct': false}]}, {'xPos': 4, 'yPos': 2, 'lines': [{'angle': 3.141592653589793, 'correct': false}, {'angle': 4.1887902047863905, 'correct': false}, {'angle': 2.0943951023931953, 'correct': false}]}, {'xPos': 3, 'yPos': 3, 'lines': [{'angle': 4.1887902047863905, 'correct': false}, {'angle': 3.141592653589793, 'correct': false}, {'angle': 5.235987755982989, 'correct': false}]}, {'xPos': 2, 'yPos': 3, 'lines': [{'angle': 4.1887902047863905, 'correct': false}, {'angle': 2.0943951023931953, 'correct': false}, {'angle': 3.141592653589793, 'correct': false}, {'angle': 0, 'correct': false}, {'angle': 5.235987755982989, 'correct': false}]}, {'xPos': 2, 'yPos': 4, 'lines': [{'angle': 5.235987755982989, 'correct': false}, {'angle': 3.141592653589793, 'correct': false}, {'angle': 4.1887902047863905, 'correct': false}]}, {'xPos': 1, 'yPos': 3, 'lines': [{'angle': 4.1887902047863905, 'correct': false}, {'angle': 2.0943951023931953, 'correct': false}, {'angle': 0, 'correct': false}, {'angle': 5.235987755982989, 'correct': false}, {'angle': 1.0471975511965976, 'correct': false}]}, {'xPos': 1, 'yPos': 4, 'lines': [{'angle': 5.235987755982989, 'correct': false}, {'angle': 0, 'correct': false}]}, {'xPos': 1, 'yPos': 2, 'lines': [{'angle': 5.235987755982989, 'correct': false}, {'angle': 1.0471975511965976, 'correct': false}, {'angle': 0, 'correct': false}]}, {'xPos': 2, 'yPos': 2, 'lines': [{'angle': 5.235987755982989, 'correct': false}, {'angle': 1.0471975511965976, 'correct': false}, {'angle': 3.141592653589793, 'correct': false}, {'angle': 0, 'correct': false}, {'angle': 4.1887902047863905, 'correct': false}, {'angle': 2.0943951023931953, 'correct': false}]}];
   }
-  public getEmptyCircles(): Array<any> {
+  public getEmptyCircles(): Array<circle> {
     let coordinates = this.circleData.map(circle => { return [circle.xPos, circle.yPos] })
     let res = [];
     for (let i = 1; i < 5; i++) { // col
@@ -104,7 +96,7 @@ export class GameContentComponent implements OnInit {
   }
 
 
-  public moveCircle(circle: any, event: any): void {
+  public moveCircle(circle: circle): void {
     if (this.dailyCompleted) {
       return;
     }
@@ -117,15 +109,31 @@ export class GameContentComponent implements OnInit {
     if (!this.timeStarted) {
       this.timeStarted = true;
       this.startTime = new Date().getTime();
+      this.initTimer()
     }
     this.checkWin();
   }
-  public resetCircles(): Array<any> {
+
+  public initTimer(): void {
+    this.timeInterval = setInterval(() => {
+      this.timer = String(Math.round((Date.now() - this.startTime) / 100) / 10);
+      if (this.timer.indexOf(".") == -1){
+        this.timer += ".0"
+      }
+    }, 100);
+    // this.timer = Date.now() - this.startTime;
+  }
+
+  public stoptimer(): void {
+    clearInterval(this.timeInterval);
+  }
+
+  public resetCircles(): Array<circle> {
     return this.circleData.map(circle => {
       return {
         xPos: circle.xPos,
         yPos: circle.yPos,
-        lines: circle.lines.map((line: { angle: any; }) => {
+        lines: circle.lines.map((line: { angle: number; }) => {
           return {
             angle: line.angle,
             correct: false
@@ -156,7 +164,7 @@ export class GameContentComponent implements OnInit {
         }
       }
     }
-    let totalCorrect = newItems.filter(circle => { return circle.lines.filter((line: { correct: any; }) => { return line.correct }).length == circle.lines.length }).length
+    let totalCorrect = newItems.filter(circle => { return circle.lines.filter((line: { correct: boolean; }) => { return line.correct }).length == circle.lines.length }).length
     this.circleData = newItems;
     if (totalCorrect == newItems.length) {
       this.gameWin();
@@ -165,14 +173,14 @@ export class GameContentComponent implements OnInit {
   }
   public closeModal(): void {
     this.displayStyle = "none";
-    document.getElementsByClassName("modal-container")[0].classList.remove("shown");
-    document.getElementsByClassName("modal-container")[0].classList.add("hidden");
+    // document.getElementsByClassName("modal-container")[0].classList.remove("shown");
+    // document.getElementsByClassName("modal-container")[0].classList.add("hidden");
   }
 
   public gameWin(): void {
     this.displayStyle = "block";
-    document.getElementsByClassName("modal-container")[0].classList.add("shown");
-    document.getElementsByClassName("modal-container")[0].classList.remove("hidden");
+    // document.getElementsByClassName("modal-container")[0].classList.add("shown");
+    // document.getElementsByClassName("modal-container")[0].classList.remove("hidden");
     this.dailyCompleted = true;
     localStorage.setItem('gameState', JSON.stringify(this.circleData));
     // let midnight = new Date(new Date().getTime() + 15 * 60 * 1000)
@@ -224,6 +232,7 @@ export class GameContentComponent implements OnInit {
   }
   public openStatsModal(){
     this.displayStyle = "block";
+
     this.onChartInit();
   }
 
@@ -315,3 +324,4 @@ export class GameContentComponent implements OnInit {
     }
   }
 }
+

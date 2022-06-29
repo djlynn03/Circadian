@@ -51,11 +51,17 @@ svg#game-main{
   font-size: 25px;
   font-weight: 600;
 }
+.game-timer{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
 @keyframes connected {
   to {
     stroke-dashoffset: 1000;
   }
-  // from {
-  //   stroke-dashoffset: 1000;
-  // }
 }
